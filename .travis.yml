@@ -10,6 +10,8 @@ before_install:
   # dockerをサービスレジストリにつなげる
   - docker login -u "$HEROKU_USERNAME" -p "$HEROKU_API_KEY" registry.heroku.com
 
+# テストのスクリプト
+# 問題がなければmasterにpushされる
 script:
   # DB準備
   - docker-compose exec --env 'RAILS_ENV=test' web rails db:create
@@ -19,11 +21,12 @@ script:
 
 # テストが完了した後のデプロイ
 deploy:
-  provider: script # herokuの場合 : heroku, dockerの場合 : script
+  provider: script # herokuの場合 : heroku, scriptでdeployの内容を記述する場合 : script
   script:
     docker build -t registy.heroku.com/$HEROKU_APP_NAME/web -f Dockerfile.prod .;
     docker push registy.heroku.com/$HEROKU_APP_NAME/web;
     heroku run --app $HEROKU_APP_NAME rails db:migrate; # heroku上のレジストリを指定
+  # masterブランチにpushされた場合のみscriptを実行
   on:
     branch: master
 
