@@ -25,7 +25,7 @@ deploy:
     docker push registy.heroku.com/$HEROKU_APP_NAME/web;
     heroku run --app $HEROKU_APP_NAME rails db:migrate; # heroku上のレジストリを指定
   on:
-  branch: master
+    branch: master
 
 # 環境変数
 # HEROKU_APP_NAME : 
