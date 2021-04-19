@@ -10,5 +10,3 @@ RUN apt-get update \
 WORKDIR /product-register
 COPY Gemfile Gemfile.lock /product-register/
 RUN bundle install
-COPY . .
-CMD ["rails", "s"]
